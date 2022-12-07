@@ -8,14 +8,12 @@ public class Graph : MonoBehaviour
 	[SerializeField]
 	Transform pointPrefab;
 
-	const int max_resolution = 100;
+	const int max_resolution = 50;
 
-	[SerializeField, Range(3, max_resolution)]
 	int resolution = 30;
 	int old_resolution = 30;
 
-	[SerializeField]
-	MathFunctionLibrary.FunctionEnum function;
+	static MathFunctionLibrary.FunctionEnum function;
 	MathFunctionLibrary.FunctionEnum old_function;
 
 	[SerializeField, Range(0.1f, 2.0f)]
@@ -26,9 +24,46 @@ public class Graph : MonoBehaviour
 	float lerp_timer = 0f;
 	bool lerping = false;
 
+	// prevents lag spike from skipping too many frames of animation
+	const float lerp_max_delta = 1f/20f; 
+
+
 	Transform[] points;
 
-	void SetResolution() {
+	public float GetLerp()
+	{
+		if(lerp_speed <= 0)
+		{
+			return 0f;
+		}
+		else
+		{
+			return lerp_timer / lerp_speed;
+		}
+	}
+
+	public void SetFunctionScale(float scale)
+	{
+		function_scale = scale;
+	}
+
+	public void SetResolution(int res)
+	{
+		resolution = res;
+	}
+
+	public void SetFunction(int func)
+	{
+		function = (MathFunctionLibrary.FunctionEnum)func;
+	}
+
+	public bool IsLerping()
+	{
+		return lerping;
+	}
+
+	void UpdateResolution()
+	{
 		float step = 2f / resolution;
 		for(int i = 0, x = 0, z = 0; i < (max_resolution * max_resolution); i++, x++) {
 			Transform point = points[i];
@@ -53,7 +88,8 @@ public class Graph : MonoBehaviour
 		}
 	}
 
-	void Awake() {
+	void Awake()
+	{
 		points = new Transform[max_resolution * max_resolution];
 		float step = 2f / resolution;
 		for(int i = 0, x = 0, z = 0; i < (max_resolution * max_resolution); i++, x++) {
@@ -90,7 +126,7 @@ public class Graph : MonoBehaviour
 
 		if(old_resolution != resolution) {
 			old_resolution = resolution;
-			SetResolution();
+			UpdateResolution();
 		}
 
 		if(function != old_function)
@@ -110,7 +146,7 @@ public class Graph : MonoBehaviour
 			}
 			else
 			{
-				lerp_timer -= Time.deltaTime;
+				lerp_timer -= Mathf.Min(Time.deltaTime, lerp_max_delta);
 			}
 		}
 
