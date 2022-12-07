@@ -42,22 +42,12 @@ public class Graph : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		MathFunctionLibrary.Function visual_function = MathFunctionLibrary.GetFunction(function);
 		float time = Time.time;
 		for(int i = 0; i < points.Length; i++) {
 			Transform point = points[i];
 			Vector3 position = point.localPosition;
-			if(function == 0)
-			{
-				position.y = MathFunctionLibrary.Wave(position.x, time);
-			}
-			else if(function == 1)
-			{
-				position.y = MathFunctionLibrary.MultiWave(position.x, time);
-			}
-			else if(function == 2)
-			{
-				position.y = MathFunctionLibrary.Ripple(position.x, time);
-			}
+			position.y = visual_function(position.x, time);
 			point.localPosition = position;
 		}
 	}
