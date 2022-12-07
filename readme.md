@@ -1,7 +1,6 @@
 # Unity Dancing Graph
 
-A simple graph that dances up and down while moduling the colours based on the position of the cubes.
+A cool 3D graph that dances up and down while moduling the colours based on the position of the cubes. Has various settings you can tweak to change the properties of the graph.
 
-Play it [here](https://tradam.itch.io/unity-dancing-graph)(has not been updated yet to reflect current video)
+Play it [here](https://tradam.itch.io/unity-dancing-graph)
 
-https://user-images.githubusercontent.com/11139432/206141137-28ddb930-eb4b-431b-b274-3cabb5496939.mp4
